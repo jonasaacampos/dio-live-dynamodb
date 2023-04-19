@@ -1,6 +1,19 @@
 # dio-live-dynamodb
 Repositório para o live coding do dia 30/09/2021 sobre o Amazon DynamoDB
 
+## Dicas para os navegantes
+
+>   As barras invertidas são usadas para quebrar a linha da consulta em várias linhas para facilitar a leitura.
+    Cada argumento da consulta está indentado em uma nova linha para tornar a consulta mais organizada.
+    Cada parâmetro da consulta está alinhado verticalmente para tornar a consulta mais legível.
+    As palavras-chave da consulta estão em maiúsculas para melhorar a clareza.
+    As definições de atributo e o esquema de chave estão claramente separados com uma linha em branco para melhorar a legibilidade.
+    A atualização de índice secundário global está claramente separada com uma linha em branco para melhorar a legibilidade.
+    O nome do índice secundário global é claramente especificado.
+    Os valores do Provisioned Throughput estão claramente especificados para melhorar a legibilidade e permitir uma fácil edição posterior, se necessário.
+    A definição de projeção do índice secundário global está claramente especificada.
+
+
 ### Serviço utilizado
   - Amazon DynamoDB
   - Amazon CLI para execução em linha de comando
@@ -12,15 +25,16 @@ Repositório para o live coding do dia 30/09/2021 sobre o Amazon DynamoDB
 
 ```
 aws dynamodb create-table \
-    --table-name Music \
-    --attribute-definitions \
-        AttributeName=Artist,AttributeType=S \
-        AttributeName=SongTitle,AttributeType=S \
-    --key-schema \
-        AttributeName=Artist,KeyType=HASH \
-        AttributeName=SongTitle,KeyType=RANGE \
-    --provisioned-throughput \
-        ReadCapacityUnits=10,WriteCapacityUnits=5
+--table-name Music \
+--attribute-definitions \
+    AttributeName=Artist,AttributeType=S \
+    AttributeName=SongTitle,AttributeType=S \
+--key-schema \
+    AttributeName=Artist,KeyType=HASH \
+    AttributeName=SongTitle,KeyType=RANGE \
+--provisioned-throughput \
+    ReadCapacityUnits=10,WriteCapacityUnits=5
+
 ```
 
 - Inserir um item
@@ -53,13 +67,16 @@ aws dynamodb update-table \
 
 ```
 aws dynamodb update-table \
-    --table-name Music \
-    --attribute-definitions\
-        AttributeName=Artist,AttributeType=S \
-        AttributeName=AlbumTitle,AttributeType=S \
-    --global-secondary-index-updates \
-        "[{\"Create\":{\"IndexName\": \"ArtistAlbumTitle-index\",\"KeySchema\":[{\"AttributeName\":\"Artist\",\"KeyType\":\"HASH\"}, {\"AttributeName\":\"AlbumTitle\",\"KeyType\":\"RANGE\"}], \
-        \"ProvisionedThroughput\": {\"ReadCapacityUnits\": 10, \"WriteCapacityUnits\": 5      },\"Projection\":{\"ProjectionType\":\"ALL\"}}}]"
+--table-name Music \
+--attribute-definitions \
+    AttributeName=Artist,AttributeType=S \
+    AttributeName=AlbumTitle,AttributeType=S \
+--global-secondary-index-updates \
+    "[{\"Create\":{\"IndexName\": \"ArtistAlbumTitle-index\", \
+    \"KeySchema\":[{\"AttributeName\":\"Artist\",\"KeyType\":\"HASH\"}, {\"AttributeName\":\"AlbumTitle\",\"KeyType\":\"RANGE\"}], \
+    \"ProvisionedThroughput\": {\"ReadCapacityUnits\": 10, \"WriteCapacityUnits\": 5 }, \
+    \"Projection\":{\"ProjectionType\":\"ALL\"}}}]" 
+
 ```
 
 - Criar um index global secundário baseado no título da música e no ano
